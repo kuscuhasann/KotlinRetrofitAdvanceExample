@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pakt_games.kotlinretrofitadvanceexample.R
-import com.pakt_games.kotlinretrofitadvanceexample.data.model.User
+import com.pakt_games.kotlinretrofitadvanceexample.data.model.Movie
 import kotlinx.android.synthetic.main.retrofit_calisma_recycler_row.view.*
 
-class RetrofitCalismaRecyclerAdapter(private val users: ArrayList<User>) : RecyclerView.Adapter<RetrofitCalismaRecyclerAdapter.DataViewHolder>() {
+class RetrofitCalismaRecyclerAdapter(private val movies: ArrayList<Movie>) : RecyclerView.Adapter<RetrofitCalismaRecyclerAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(user: User) {
+        fun bind(user: Movie) {
             itemView.apply {
-                textViewUserName.text = user.name
-                textViewUserEmail.text = user.email
+                textViewUserName.text = user.title
+                textViewUserEmail.text = user.release_date
                 Glide.with(imageViewAvatar.context)
-                    .load(user.avatar)
+                    .load("https://image.tmdb.org/t/p/w500/"+user.backdrop_path)
                     .into(imageViewAvatar)
             }
         }
@@ -27,16 +27,16 @@ class RetrofitCalismaRecyclerAdapter(private val users: ArrayList<User>) : Recyc
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder =
         DataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.retrofit_calisma_recycler_row, parent, false))
 
-    override fun getItemCount(): Int = users.size
+    override fun getItemCount(): Int = movies.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(users[position])
+        holder.bind(movies[position])
     }
 
-    fun addUsers(users: List<User>) {
-        this.users.apply {
+    fun addMovies(movies: List<Movie>) {
+        this.movies.apply {
             clear()
-            addAll(users)
+            addAll(movies)
         }
 
     }

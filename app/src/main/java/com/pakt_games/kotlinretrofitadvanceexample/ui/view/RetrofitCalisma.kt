@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.pakt_games.kotlinretrofitadvanceexample.R
 import com.pakt_games.kotlinretrofitadvanceexample.data.api.ApiHelper
+import com.pakt_games.kotlinretrofitadvanceexample.data.api.MovieListResponse
 import com.pakt_games.kotlinretrofitadvanceexample.data.api.RetrofitBuilder
-import com.pakt_games.kotlinretrofitadvanceexample.data.model.User
+import com.pakt_games.kotlinretrofitadvanceexample.data.model.Movie
 import com.pakt_games.kotlinretrofitadvanceexample.ui.adapter.RetrofitCalismaRecyclerAdapter
 import com.pakt_games.kotlinretrofitadvanceexample.ui.base.ViewModelFactory
 import com.pakt_games.kotlinretrofitadvanceexample.ui.viewmodel.RetrofitCalismaViewModel
@@ -26,7 +26,6 @@ class RetrofitCalisma : Fragment() {
 
     private lateinit var viewModel: RetrofitCalismaViewModel
     private lateinit var adapter: RetrofitCalismaRecyclerAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +65,13 @@ class RetrofitCalisma : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.getUsers().observe(viewLifecycleOwner, Observer {
+        viewModel.getMovies().observe(viewLifecycleOwner, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         recyclerView.visibility = View.VISIBLE
                         progressBar.visibility = View.GONE
-                        resource.data?.let { users -> retrieveList(users) }
+                        resource.data?.let { movies -> retrieveList(movies.filmler) }
                     }
                     Status.ERROR -> {
                         recyclerView.visibility = View.VISIBLE
@@ -88,9 +87,9 @@ class RetrofitCalisma : Fragment() {
         })
     }
 
-    private fun retrieveList(users: List<User>) {
+    private fun retrieveList(movies: List<Movie>) {
         adapter.apply {
-            addUsers(users)
+            addMovies(movies)
             notifyDataSetChanged()
         }
     }
